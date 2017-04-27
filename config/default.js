@@ -50,7 +50,10 @@ module.exports = {
     "port":"2775",
     "password":"pwd1",
 //"Veery@123",
-    "user":"smppclient1"
+    "user":"smppclient1",
+
+    "system_type":"380666000600",
+    "address_range": "380666000600"
 //"veerysms"
 
   },

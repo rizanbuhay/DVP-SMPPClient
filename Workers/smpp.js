@@ -9,6 +9,9 @@ var CallHttProgrammingAPI = require('dvp-common/ServiceAccess/common').CallHttPr
 
 var smpphost = config.SMPPClient.ip;
 var smppport = config.SMPPClient.port;
+var system_type = config.SMPPClient.system_type;
+var address_range = config.SMPPClient.address_range;
+
 var didConnect = false;
 
 
@@ -24,8 +27,8 @@ session.on('connect', function(){
         system_id: username,
         password: password,
         interface_version: 1,
-        system_type: '380666000600',
-        address_range: '380666000600',
+        system_type: system_type,
+        address_range: address_range,
         //380666000600
         addr_ton: 1,
         addr_npi: 1,
