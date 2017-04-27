@@ -20,14 +20,13 @@ session.on('connect', function(){
     var password = config.SMPPClient.password;
     didConnect = true;
 
-
-
     session.bind_transceiver({
         system_id: username,
         password: password,
         interface_version: 1,
         system_type: '380666000600',
-        address_range: '+380666000600',
+        address_range: '380666000600',
+        //380666000600
         addr_ton: 1,
         addr_npi: 1,
     }, function(pdu) {
@@ -37,8 +36,6 @@ session.on('connect', function(){
         }
     });
 });
-
-
 
 
 session.on('close', function(){
@@ -71,8 +68,6 @@ function connectSMPP() {
 }
 
 var sendSMPP = function(from, to, text, cb) {
-
-
 
     from = from.toString();
     to   = to.toString();
@@ -134,7 +129,7 @@ session.on('pdu', function(pdu){
 
             }else{
 
-                logger.error("Call Dynamic configuration routing success");
+                logger.error("Call Dynamic configuration routing failed");
             }
 
         });
@@ -142,7 +137,7 @@ session.on('pdu', function(pdu){
         // Reply to SMSC that we received and processed the SMS
         session.deliver_sm_resp({ sequence_number: pdu.sequence_number });
     }
-})
+});
 
 
 module.exports.SendSMPP = sendSMPP;

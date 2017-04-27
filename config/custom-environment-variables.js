@@ -1,13 +1,4 @@
 module.exports = {
-    "DB": {
-        "Type":"SYS_DATABASE_TYPE",
-        "User":"SYS_DATABASE_POSTGRES_USER",
-        "Password":"SYS_DATABASE_POSTGRES_PASSWORD",
-        "Port":"SYS_SQL_PORT",
-        "Host":"SYS_DATABASE_HOST",
-        "Database":"SYS_DATABASE_POSTGRES_USER"
-    },
-
 
     "Redis":
     {
@@ -25,15 +16,6 @@ module.exports = {
         "user": "SYS_REDIS_USER",
         "password": "SYS_REDIS_PASSWORD"
 
-    },
-
-    "Mongo":
-    {
-        "ip":"SYS_MONGO_HOST",
-        "port":"SYS_MONGO_PORT",
-        "dbname":"SYS_MONGO_DB",
-        "password":"SYS_MONGO_PASSWORD",
-        "user":"SYS_MONGO_USER"
     },
 	
 	    "RabbitMQ":
@@ -63,19 +45,9 @@ module.exports = {
     },
 
 
-
-
     "Host":
     {
-        "vdomain": "LB_FRONTEND",
-        "domain": "HOST_NAME",
-        "port": "HOST_SOCIALCONNECTOR_PORT",
-        "version": "HOST_VERSION",
-        "smsQueueName": "SMS_QUEUE_NAME",
-        "smsmode": "SMS_MODE",
-        'twitterQueueName': "TWITTER_QUEUE_NAME",
-        'facebookQueueName': "FACEBOOK_QUEUE_NAME"
-
+        "smsQueueName": "SMS_QUEUE_NAME"
 
     },
 
@@ -105,7 +77,15 @@ module.exports = {
 		
 		"ardsServiceHost": "SYS_ARDSLITESERVICE_HOST",
 		"ardsServicePort": "SYS_ARDSLITESERVICE_PORT",
-		"ardsServiceVersion": "SYS_ARDSLITESERVICE_VERSION"
+		"ardsServiceVersion": "SYS_ARDSLITESERVICE_VERSION",
+
+        "dynamicconfigurl" : "SYS_DYNAMICCONFIGGENERATOR_HOST",
+        "dynamicconfigport" : "SYS_DYNAMICCONFIGGENERATOR_PORT",
+        "dynamicconfigversion" : "SYS_DYNAMICCONFIGGENERATOR_VERSION",
+
+        "httprogrammingurl" : "SYS_HTTPROGRAMINGAPI_HOST",
+        "httprogrammingport" : "SYS_HTTPROGRAMINGAPI_PORT",
+        "httprogrammingversion" : "SYS_HTTPROGRAMINGAPI_VERSION"
 
     }
 };

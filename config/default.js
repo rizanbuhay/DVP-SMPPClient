@@ -3,16 +3,6 @@ module.exports = {
 
 
 
-  "DB": {
-    "Type":"postgres",
-    "User":"duo",
-    "Password":"DuoS123",
-    "Port":5432,
-    "Host":"localhost",
-    "Database":"dvpdb"
-  },
-
-
   "Redis":
   {
     "ip": "45.55.142.207",
@@ -34,17 +24,8 @@ module.exports = {
 
   "Host":
   {
-    "ServerType": "SOCIALMEDIACONNECTOR",
-    "CallbackOption": "GET",
-    "RequestType": "CALL",
-    "ServerID": 2,
-    "resource": "cluster",
-    "vdomain": "localhost",
-    "domain": "localhost",
-    "port": "4647",
     "smsQueueName": "SMSOUT",
-    "smsNumber": "0710400400",
-    "version": "1.0.0.0"
+    "smsNumber": "0710400400"
   },
 
 
@@ -64,10 +45,13 @@ module.exports = {
 
   "SMPPClient":{
 
-    "ip":"81.201.83.10",
-    "port":"2777",
-    "password":"Veery@123",
-    "user":"veerysms"
+    "ip":"45.55.203.111",
+        //"81.201.83.10",
+    "port":"2775",
+    "password":"pwd1",
+//"Veery@123",
+    "user":"smppclient1"
+//"veerysms"
 
   },
 
@@ -79,17 +63,6 @@ module.exports = {
     "port": "4647"
 
   },
-
-
-  "Mongo":
-  {
-    "ip":"45.55.142.207",
-    "port":"27017",
-    "dbname":"dvpdb",
-    "password":"DuoS123",
-    "user":"duo"
-  },
-
 
 
   "RabbitMQ":
@@ -133,12 +106,13 @@ module.exports = {
     "ruleserviceport" : "8888",
     "ruleserviceversion" : "1.0.0.0",
 
-    "dynamicconfigurl" : "dynamicconfiggenerator.app.veery.cloud",
+    "dynamicconfigurl" : "dynamicconfigurationgenerator.app.veery.cloud",
     "dynamicconfigport" : "8888",
     "dynamicconfigversion" : "1.0.0.0",
 
-    "httprogrammingurl" : "httpprogrammingapi.app.veery.cloud",
-    "httprogrammingport" : "8888",
+    "httprogrammingurl" : "127.0.0.1",
+        //"httpprogrammingapi.app.veery.cloud",
+    "httprogrammingport" : "8086",
     "httprogrammingversion" : "1.0.0.0"
 
 
