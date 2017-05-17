@@ -6,6 +6,7 @@ var smpp = require('smpp');
 var logger = require('dvp-common/LogHandler/CommonLogHandler.js').logger;
 var CallDynamicConfigRouting = require('dvp-common/ServiceAccess/common').CallDynamicConfigRouting;
 var CallHttProgrammingAPI = require('dvp-common/ServiceAccess/common').CallHttProgrammingAPI;
+var util = require("util");
 
 var smpphost = config.SMPPClient.ip;
 var smppport = config.SMPPClient.port;
@@ -13,6 +14,7 @@ var system_type = config.SMPPClient.system_type;
 var address_range = config.SMPPClient.address_range;
 
 var didConnect = false;
+var isConnected = false;
 
 
 var session = new smpp.Session({host: smpphost, port: smppport});
@@ -22,6 +24,7 @@ session.on('connect', function(){
     var username = config.SMPPClient.user;
     var password = config.SMPPClient.password;
     didConnect = true;
+    isConnected = true;
 
     session.bind_transceiver({
         system_id: username,
@@ -42,7 +45,8 @@ session.on('connect', function(){
 
 
 session.on('close', function(){
-    logger.info('smpp disconnected')
+    logger.info('smpp disconnected');
+    isConnected = false;
     if (didConnect) {
         connectSMPP();
     }
@@ -52,6 +56,7 @@ session.on('close', function(){
 
 session.on('error', function(error){
     logger.error('smpp error', error)
+    isConnected = false;
     //didConnect = true;
     //process.exit(1);
 });
@@ -72,29 +77,37 @@ function connectSMPP() {
 
 var sendSMPP = function(from, to, text, cb) {
 
-    from = from.toString();
-    to   = to.toString();
+    if(!isConnected) {
+
+        from = from.toString();
+        to = to.toString();
 
 
-    logger.info("from :" +from);
-    logger.info("to :"+to);
-    logger.info("text :"+text);
+        logger.info("from :" + from);
+        logger.info("to :" + to);
+        logger.info("text :" + text);
 
-    session.submit_sm({
-        source_addr:      from,
-        destination_addr: to,
-        short_message:    text
-    }, function(pdu) {
-        logger.info('sms pdu status', lookupPDUStatusKey(pdu.command_status));
-        if (pdu.command_status == 0) {
-            // Message successfully sent
-            logger.info(pdu.message_id);
-            cb(true, pdu.message_id)
-        }else{
+        session.submit_sm({
+            source_addr: from,
+            destination_addr: to,
+            short_message: text
+        }, function (pdu) {
+            logger.info('sms pdu status', lookupPDUStatusKey(pdu.command_status));
+            if (pdu.command_status == 0) {
+                // Message successfully sent
+                logger.info(pdu.message_id);
+                cb(true, pdu.message_id)
+            } else {
 
-            cb(false)
-        }
-    });
+                cb(false);
+            }
+        });
+    }else{
+
+        logger.error(util.format("Message send failed due to connection is closed from %s to %s text %s",from, to, text));
+
+        cb(false);
+    }
 }
 
 
