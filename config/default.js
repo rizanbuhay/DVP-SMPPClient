@@ -43,6 +43,17 @@ module.exports = {
   },
 
 
+
+  "Mongo":
+  {
+    "ip":"45.55.142.207",
+    "port":"27017",
+    "dbname":"dvpdb",
+    "password":"DuoS123",
+    "user":"duo",
+    "replicaset" :"104.236.231.11"
+  },
+
   "SMPPClient":{
 
     "ip":"45.55.203.111",

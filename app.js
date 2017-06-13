@@ -7,6 +7,8 @@ var amqp = require('amqp');
 var logger = require('dvp-common/LogHandler/CommonLogHandler.js').logger;
 var request = require('request');
 var format = require("stringformat");
+var util = require("util");
+var mongoose = require('mongoose');
 var CreateEngagement = require('dvp-common/ServiceAccess/common').CreateEngagement;
 var CreateComment = require('dvp-common/ServiceAccess/common').CreateComment;
 var CreateTicket = require('dvp-common/ServiceAccess/common').CreateTicket;
@@ -19,6 +21,58 @@ var queueHost = format('amqp://{0}:{1}@{2}:{3}',config.RabbitMQ.user,config.Rabb
 var queueName = config.Host.smsQueueName;
 
 var smpp = require('./Workers/smpp');
+
+
+var mongoip = config.Mongo.ip;
+var mongoport = config.Mongo.port;
+var mongodb = config.Mongo.dbname;
+var mongouser = config.Mongo.user;
+var mongopass = config.Mongo.password;
+var mongoreplicaset=config.Mongo.replicaset;
+
+
+var mongoose = require('mongoose');
+var connectionstring = '';
+mongoip = mongoip.split(',');
+if(util.isArray(mongoip)){
+    if(mongoip.length > 1){
+        mongoip.forEach(function(item){
+            connectionstring += util.format('%s:%d,',item,mongoport)
+        });
+
+        connectionstring = connectionstring.substring(0, connectionstring.length - 1);
+        connectionstring = util.format('mongodb://%s:%s@%s/%s',mongouser,mongopass,connectionstring,mongodb);
+
+        if(mongoreplicaset){
+            connectionstring = util.format('%s?replicaSet=%s',connectionstring,mongoreplicaset) ;
+            logger.info("connectionstring ...   "+connectionstring);
+        }
+    }
+    else
+    {
+        connectionstring = util.format('mongodb://%s:%s@%s:%d/%s',mongouser,mongopass,mongoip[0],mongoport,mongodb);
+    }
+}else {
+
+    connectionstring = util.format('mongodb://%s:%s@%s:%d/%s', mongouser, mongopass, mongoip, mongoport, mongodb);
+
+}
+logger.info("connectionstring ...   "+connectionstring);
+
+mongoose.connection.on('error', function (err) {
+    logger.error(err);
+});
+
+mongoose.connection.on('disconnected', function () {
+    logger.error('Could not connect to database');
+});
+
+mongoose.connection.once('open', function () {
+    logger.info("Connected to db");
+});
+
+
+mongoose.connect(connectionstring);
 
 
 var queueConnection = amqp.createConnection({
