@@ -14,7 +14,7 @@ var GetCallRule = require('dvp-common/ServiceAccess/common').GetCallRule;
 var UpdateComment = require('dvp-common/ServiceAccess/common').UpdateComment;
 var config = require('config');
 var uuid = require('node-uuid');
-var Render = require('dvp-common/TemplateGenerator/template.js').UpdateComment;
+var Render = require('dvp-common/TemplateGenerator/template.js').Render;
 var queueHost = format('amqp://{0}:{1}@{2}:{3}',config.RabbitMQ.user,config.RabbitMQ.password,config.RabbitMQ.ip,config.RabbitMQ.port);
 var queueName = config.Host.smsQueueName;
 
@@ -80,6 +80,8 @@ queueConnection.on('ready', function () {
 
 function SendSMPP(company, tenant, mailoptions, cb){
 
+    logger.info("Send SMS started .....");
+
     smpp.SendSMPP(mailoptions.from, mailoptions.to, mailoptions.text, function (_isDone, id) {
 
         try {
@@ -87,6 +89,8 @@ function SendSMPP(company, tenant, mailoptions, cb){
             if (_isDone) {
 
                 logger.debug("Successfully send sms");
+
+                //channel, company, tenant, from, to, direction, session, data, user,channel_id,contact,  cb
 
                 CreateEngagement('sms', company, tenant, mailoptions.from, mailoptions.to, 'outbound', id, mailoptions.text, undefined, undefined, undefined, function (done, result) {
                     if (done) {
@@ -179,6 +183,7 @@ function SendSMPP(company, tenant, mailoptions, cb){
 };
 
 
+
 function SendSMS(message, deliveryInfo, ack) {
 
 
@@ -203,11 +208,16 @@ function SendSMS(message, deliveryInfo, ack) {
     };
 
 
+    logger.debug(message);
+
     if(message && message.template){
 
 
+        logger.info("render started");
 
         Render(message.template,company,tenant,message.Parameters, function(isDone, message){
+            logger.info("render is completed");
+
             if(isDone && message){
 
                 mailOptions.text = message;
