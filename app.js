@@ -187,7 +187,7 @@ function SendSMPP(company, tenant, mailoptions, cb){
 function SendSMS(message, deliveryInfo, ack) {
 
 
-    logger.debug("DVP-SocialConnector.SendSMS Internal method ");
+    logger.info("DVP-SocialConnector.SendSMS Internal method ");
     var jsonString;
     var tenant = message.tenant;
     var company = message.company;
@@ -208,7 +208,7 @@ function SendSMS(message, deliveryInfo, ack) {
     };
 
 
-    logger.debug(message);
+    logger.info(message);
 
     if(message && message.template){
 
