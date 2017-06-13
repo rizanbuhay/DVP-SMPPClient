@@ -1,0 +1,27 @@
+{
+  "name": "dvp-smppclient",
+  "version": "1.0.0",
+  "description": "smpp client ",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DuoSoftware/DVP-SMPPClient.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DuoSoftware/DVP-SMPPClient/issues"
+  },
+  "homepage": "https://github.com/DuoSoftware/DVP-SMPPClient#readme",
+  "dependencies": {
+    "amqp": "^0.2.6",
+    "config": "^1.25.1",
+    "dvp-common": "^0.6.9",
+    "node-uuid": "^1.4.8",
+    "smpp": "^0.3.1",
+    "stringformat": "0.0.5"
+  }
+}
