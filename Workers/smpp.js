@@ -77,7 +77,7 @@ function connectSMPP() {
 
 var sendSMPP = function(from, to, text, cb) {
 
-    if(!isConnected) {
+    if(isConnected) {
 
         from = from.toString();
         to = to.toString();
