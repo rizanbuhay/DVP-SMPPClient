@@ -77,7 +77,7 @@ mongoose.connect(connectionstring);
 
 var queueConnection = amqp.createConnection({
     url: queueHost,
-    heartbeat:20
+    heartbeat:10
 }, {
     reconnect: true,
     reconnectBackoffStrategy: 'linear',
