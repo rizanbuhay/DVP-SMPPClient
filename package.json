@@ -18,6 +18,7 @@
   "homepage": "https://github.com/DuoSoftware/DVP-SMPPClient#readme",
   "dependencies": {
     "amqp": "^0.2.6",
+    "amqplib": "^0.5.1",
     "config": "^1.25.1",
     "dvp-common": "^0.7.1",
     "mongoose": "^4.10.6",
