@@ -17,7 +17,7 @@ var UpdateComment = require('dvp-common/ServiceAccess/common').UpdateComment;
 var config = require('config');
 var uuid = require('node-uuid');
 var Render = require('dvp-common/TemplateGenerator/template.js').Render;
-var queueHost = format('amqp://{0}:{1}@{2}:{3}',config.RabbitMQ.user,config.RabbitMQ.password,config.RabbitMQ.ip,config.RabbitMQ.port);
+//var queueHost = format('amqp://{0}:{1}@{2}:{3}',config.RabbitMQ.user,config.RabbitMQ.password,config.RabbitMQ.ip,config.RabbitMQ.port);
 var queueName = config.Host.smsQueueName;
 var smpp = require('./Workers/smpp');
 
@@ -72,8 +72,28 @@ mongoose.connection.once('open', function () {
 
 mongoose.connect(connectionstring);
 
+
+//host: 'localhost'
+//    , port: 5672
+//    , login: 'guest'
+//    , password: 'guest'
+//    , connectionTimeout: 10000
+//    , authMechanism: 'AMQPLAIN'
+//    , vhost: '/'
+//    , noDelay: true
+if(config.RabbitMQ.ip) {
+    config.RabbitMQ.ip = config.RabbitMQ.ip.split(",");
+}
+
+
 var queueConnection = amqp.createConnection({
-    url: queueHost,
+    //url: queueHost,
+    host: config.RabbitMQ.ip,
+    port: config.RabbitMQ.port,
+    login: config.RabbitMQ.user,
+    password: config.RabbitMQ.password,
+    vhost: config.RabbitMQ.vhost,
+    noDelay: true,
     heartbeat:10
 }, {
     reconnect: true,
@@ -83,6 +103,8 @@ var queueConnection = amqp.createConnection({
 });
 
 queueConnection.on('ready', function () {
+
+    logger.debug("Queue connection completed.......");
     queueConnection.queue(queueName, {durable: true, autoDelete: false},function (q) {
         q.bind('#');
         q.subscribe({
