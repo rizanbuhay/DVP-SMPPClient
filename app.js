@@ -19,7 +19,6 @@ var uuid = require('node-uuid');
 var Render = require('dvp-common/TemplateGenerator/template.js').Render;
 var queueHost = format('amqp://{0}:{1}@{2}:{3}',config.RabbitMQ.user,config.RabbitMQ.password,config.RabbitMQ.ip,config.RabbitMQ.port);
 var queueName = config.Host.smsQueueName;
-
 var smpp = require('./Workers/smpp');
 
 
@@ -30,10 +29,10 @@ var mongouser = config.Mongo.user;
 var mongopass = config.Mongo.password;
 var mongoreplicaset=config.Mongo.replicaset;
 
-
 var mongoose = require('mongoose');
 var connectionstring = '';
 mongoip = mongoip.split(',');
+
 if(util.isArray(mongoip)){
     if(mongoip.length > 1){
         mongoip.forEach(function(item){
@@ -71,9 +70,7 @@ mongoose.connection.once('open', function () {
     logger.info("Connected to db");
 });
 
-
 mongoose.connect(connectionstring);
-
 
 var queueConnection = amqp.createConnection({
     url: queueHost,
@@ -100,9 +97,6 @@ queueConnection.on('ready', function () {
                 return ack.acknowledge();
             }
             //!message.from ||
-
-
-
             GetCallRule(message.company , message.tenant, message.from, message.to, "SMS", function(isDone, result){
                 if(isDone){
 
@@ -130,8 +124,6 @@ queueConnection.on('ready', function () {
         });
     });
 });
-
-
 
 function SendSMPP(company, tenant, mailoptions, cb){
 
@@ -237,8 +229,6 @@ function SendSMPP(company, tenant, mailoptions, cb){
 
 };
 
-
-
 function SendSMS(message, deliveryInfo, ack) {
 
 
@@ -314,6 +304,5 @@ function SendSMS(message, deliveryInfo, ack) {
     }
 
 };
-
 
 module.exports.SendSMS = SendSMS;
